@@ -3,568 +3,387 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name — Developer</title>
+  <title>Mohamed Drissi El Bouzaidi — Senior Fullstack Developer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --white:   #FAFAF8;
-      --ink:     #111110;
-      --sage:    #7FA882;
-      --sage-lt: #E8F0E8;
-      --sage-dk: #4A6B4D;
-      --warm:    #F4F0E8;
-      --border:  #DEDAD2;
-      --muted:   #7A7870;
-      --serif:   'Libre Baskerville', Georgia, serif;
-      --display: 'Syne', sans-serif;
-      --radius:  12px;
-      --max:     820px;
+      --white: #FAFAF8; --ink: #111110; --sage: #7FA882; --sage-lt: #E8F0E8;
+      --sage-dk: #4A6B4D; --warm: #F4F0E8; --border: #DEDAD2; --muted: #7A7870;
+      --serif: 'Libre Baskerville', Georgia, serif; --display: 'Syne', sans-serif;
+      --radius: 12px; --max: 860px;
     }
-
     html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--ink); font-family: var(--serif); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; cursor: none; }
 
-    body {
-      background: var(--white);
-      color: var(--ink);
-      font-family: var(--serif);
-      font-size: 16px;
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
-      cursor: none;
-    }
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--sage); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, opacity .2s; mix-blend-mode: multiply; }
+    .cursor.hovered { width: 32px; height: 32px; opacity: .35; }
 
-    .cursor {
-      position: fixed;
-      width: 10px; height: 10px;
-      background: var(--sage);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease;
-      mix-blend-mode: multiply;
-    }
-    .cursor.hovered { width: 32px; height: 32px; opacity: 0.35; }
-
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 500;
-      padding: 0 3rem;
-    }
-    .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .nav-logo {
-      font-family: var(--display);
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-      color: var(--ink);
-    }
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; padding: 0 3rem; }
+    .nav-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav-logo { font-family: var(--display); font-weight: 700; font-size: 14px; letter-spacing: .05em; text-decoration: none; color: var(--ink); }
     .nav-logo em { color: var(--sage); font-style: normal; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      font-family: var(--display);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-family: var(--display); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .15s; }
     .nav-links a:hover { color: var(--ink); }
 
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 3rem 5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg-circle {
-      position: absolute;
-      top: -120px; right: -160px;
-      width: 560px; height: 560px;
-      background: var(--sage-lt);
-      border-radius: 50%;
-      z-index: 0;
-    }
-    .hero-content {
-      max-width: var(--max);
-      width: 100%;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--display);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sage-dk);
-      background: var(--sage-lt);
-      padding: 5px 14px;
-      border-radius: 100px;
-      margin-bottom: 2rem;
-    }
-    .hero-tag::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--sage);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.7); }
-    }
-    .hero-name {
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: clamp(3.2rem, 9vw, 6.5rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      margin-bottom: 2rem;
-    }
-    .hero-name .line2 {
-      display: block;
-      color: var(--muted);
-      font-weight: 400;
-      font-style: italic;
-      font-family: var(--serif);
-      font-size: 0.55em;
-      letter-spacing: -0.01em;
-      padding-left: 0.15em;
-      margin-top: 0.3em;
-    }
-    .hero-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-    .hero-desc {
-      max-width: 380px;
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    /* LANG TOGGLE */
+    .lang-toggle { display: flex; background: var(--warm); border: 1px solid var(--border); border-radius: 100px; padding: 3px; gap: 2px; }
+    .lang-btn { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 4px 12px; border-radius: 100px; border: none; background: transparent; cursor: none; color: var(--muted); transition: all .18s; }
+    .lang-btn.active { background: var(--ink); color: var(--white); }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 3rem 5rem; position: relative; overflow: hidden; }
+    .hero-bg-circle { position: absolute; top: -120px; right: -160px; width: 560px; height: 560px; background: var(--sage-lt); border-radius: 50%; z-index: 0; }
+    .hero-content { max-width: var(--max); width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--sage-dk); background: var(--sage-lt); padding: 5px 14px; border-radius: 100px; margin-bottom: 2rem; }
+    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+    .hero-name { font-family: var(--display); font-weight: 800; font-size: clamp(2.8rem,8vw,5.8rem); line-height: .95; letter-spacing: -.03em; margin-bottom: 2rem; }
+    .hero-name .line2 { display: block; color: var(--muted); font-weight: 400; font-style: italic; font-family: var(--serif); font-size: .5em; letter-spacing: -.01em; padding-left: .15em; margin-top: .35em; }
+    .hero-foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1.5rem; }
+    .hero-desc { max-width: 420px; font-size: 15px; color: var(--muted); line-height: 1.7; }
     .hero-cta { display: flex; gap: 1rem; }
-    .btn {
-      font-family: var(--display);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 12px 24px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: all 0.18s ease;
-      display: inline-block;
-    }
+    .btn { font-family: var(--display); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 12px 24px; border-radius: 6px; text-decoration: none; transition: all .18s; display: inline-block; border: none; cursor: none; }
     .btn-solid { background: var(--ink); color: var(--white); }
     .btn-solid:hover { background: var(--sage-dk); }
     .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
     .btn-ghost:hover { border-color: var(--sage); color: var(--sage-dk); }
 
-    .section-wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 6rem 3rem;
-    }
+    /* SECTIONS */
+    .section-wrap { max-width: var(--max); margin: 0 auto; padding: 6rem 3rem; }
     section + section { border-top: 1px solid var(--border); }
-
-    .section-head {
-      display: flex;
-      align-items: baseline;
-      gap: 1.5rem;
-      margin-bottom: 3.5rem;
-    }
-    .section-num {
-      font-family: var(--display);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--sage);
-      letter-spacing: 0.1em;
-    }
-    .section-title {
-      font-family: var(--display);
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+    .section-head { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+    .section-num { font-family: var(--display); font-size: 11px; font-weight: 700; color: var(--sage); letter-spacing: .1em; }
+    .section-title { font-family: var(--display); font-size: 28px; font-weight: 800; letter-spacing: -.02em; }
     .section-rule { flex: 1; height: 1px; background: var(--border); }
 
-    .about-layout {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-    @media (max-width: 640px) { .about-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
+    /* ABOUT */
+    .about-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: start; }
+    @media(max-width:640px){.about-layout{grid-template-columns:1fr;gap:2.5rem}}
     .about-bio p { font-size: 16px; line-height: 1.85; }
-    .about-bio p + p { margin-top: 1.25rem; }
+    .about-bio p+p { margin-top: 1.25rem; }
     .about-bio em { color: var(--sage-dk); font-style: italic; }
-    .about-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar-card {
-      background: var(--warm);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      border: 1px solid var(--border);
-    }
-    .sidebar-label {
-      font-family: var(--display);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .sidebar-val { font-family: var(--display); font-size: 15px; font-weight: 500; }
+    .about-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+    .sidebar-card { background: var(--warm); border-radius: var(--radius); padding: 1rem 1.25rem; border: 1px solid var(--border); }
+    .sidebar-label { font-family: var(--display); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .sidebar-val { font-family: var(--display); font-size: 14px; font-weight: 500; }
 
-    .project-item {
-      display: grid;
-      grid-template-columns: 56px 1fr auto;
-      gap: 1.5rem;
-      align-items: start;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: inherit;
-    }
+    /* PROJECTS */
+    .project-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 1.5rem; align-items: start; padding: 2rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; cursor: none; }
     .project-item:first-child { border-top: 1px solid var(--border); }
     .project-item:hover .project-num-big { color: var(--sage); }
     .project-item:hover .arrow-box { background: var(--sage); border-color: var(--sage); color: var(--white); }
-    .project-num-big {
-      font-family: var(--display);
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--border);
-      line-height: 1;
-      transition: color 0.2s;
-      padding-top: 4px;
-    }
-    .project-title {
-      font-family: var(--display);
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.01em;
-    }
-    .project-desc { font-size: 14px; color: var(--muted); margin-bottom: 0.85rem; }
+    .project-num-big { font-family: var(--display); font-size: 32px; font-weight: 800; color: var(--border); line-height: 1; transition: color .2s; padding-top: 4px; }
+    .project-title { font-family: var(--display); font-size: 20px; font-weight: 700; margin-bottom: .4rem; letter-spacing: -.01em; }
+    .project-company { font-family: var(--display); font-size: 12px; font-weight: 600; color: var(--sage-dk); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
+    .project-desc { font-size: 14px; color: var(--muted); margin-bottom: .85rem; line-height: 1.6; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag {
-      font-family: var(--display);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--sage-lt);
-      color: var(--sage-dk);
-      padding: 3px 10px;
-      border-radius: 4px;
-    }
-    .arrow-box {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      transition: all 0.18s;
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
+    .tag { font-family: var(--display); font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: var(--sage-lt); color: var(--sage-dk); padding: 3px 10px; border-radius: 4px; }
+    .arrow-box { width: 36px; height: 36px; border: 1.5px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .18s; flex-shrink: 0; margin-top: 4px; }
 
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-    .skill-group {
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(17,17,16,.6); backdrop-filter: blur(6px); z-index: 800; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--white); border-radius: 16px; max-width: 680px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2.5rem; position: relative; transform: translateY(20px); transition: transform .25s; }
+    .modal-overlay.open .modal { transform: none; }
+    .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; width: 32px; height: 32px; border: 1.5px solid var(--border); border-radius: 8px; background: none; font-size: 18px; cursor: none; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all .15s; }
+    .modal-close:hover { background: var(--warm); color: var(--ink); }
+    .modal-company { font-family: var(--display); font-size: 11px; font-weight: 700; color: var(--sage-dk); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+    .modal-title { font-family: var(--display); font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-bottom: .4rem; }
+    .modal-duration { font-family: var(--display); font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; }
+    .modal-section-title { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 1.5rem 0 .75rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+    .modal-text { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .modal-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .modal-list li { font-size: 14px; color: var(--ink); line-height: 1.6; padding-left: 1.25rem; position: relative; }
+    .modal-list li::before { content: '→'; position: absolute; left: 0; color: var(--sage); font-size: 12px; top: 3px; }
+    .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: .75rem; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .skill-group { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; position: relative; overflow: hidden; transition: border-color .2s; }
     .skill-group:hover { border-color: var(--sage); }
-    .skill-group::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--sage);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
+    .skill-group::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--sage); opacity: 0; transition: opacity .2s; }
     .skill-group:hover::before { opacity: 1; }
-    .skill-group-name {
-      font-family: var(--display);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
+    .skill-group-name { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
     .skill-items { display: flex; flex-wrap: wrap; gap: 6px; }
-    .skill-pill {
-      font-family: var(--display);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--ink);
-      background: var(--warm);
-      padding: 5px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
+    .skill-pill { font-family: var(--display); font-size: 12px; font-weight: 500; color: var(--ink); background: var(--warm); padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); }
 
-    .contact-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    @media (max-width: 600px) { .contact-layout { grid-template-columns: 1fr; } }
-    .contact-headline {
-      font-family: var(--display);
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-    .contact-headline span {
-      display: block;
-      font-family: var(--serif);
-      font-style: italic;
-      font-weight: 400;
-      font-size: 0.65em;
-      color: var(--muted);
-      letter-spacing: 0;
-    }
+    /* CONTACT */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    @media(max-width:600px){.contact-layout{grid-template-columns:1fr}}
+    .contact-headline { font-family: var(--display); font-size: clamp(2rem,5vw,3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1rem; }
+    .contact-headline span { display: block; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: .65em; color: var(--muted); letter-spacing: 0; }
     .contact-sub { color: var(--muted); font-size: 15px; margin-bottom: 2rem; }
     .contact-links { display: flex; flex-direction: column; }
-    .contact-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: var(--ink);
-      font-family: var(--display);
-      font-size: 15px;
-      font-weight: 500;
-      transition: color 0.15s;
-    }
+    .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--ink); font-family: var(--display); font-size: 15px; font-weight: 500; transition: color .15s; }
     .contact-link:hover { color: var(--sage-dk); }
-    .contact-link .link-arrow { font-size: 18px; transition: transform 0.15s; }
-    .contact-link:hover .link-arrow { transform: translate(3px, -3px); }
+    .contact-link .link-arrow { font-size: 18px; transition: transform .15s; }
+    .contact-link:hover .link-arrow { transform: translate(3px,-3px); }
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 3rem;
-    }
-    .footer-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 3rem; }
+    .footer-inner { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
     footer p { font-family: var(--display); font-size: 12px; color: var(--muted); }
     footer a { color: var(--sage-dk); text-decoration: none; }
 
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.in { opacity: 1; transform: none; }
+
+    /* hidden by lang */
+    [data-lang] { display: none; }
+    .lang-en [data-lang="en"], .lang-fr [data-lang="fr"] { display: block; }
+    span[data-lang] { display: none; }
+    .lang-en span[data-lang="en"], .lang-fr span[data-lang="fr"] { display: inline; }
   </style>
 </head>
-<body>
+<body class="lang-en">
 
 <div class="cursor" id="cursor"></div>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#hero">YN<em>.</em></a>
+    <a class="nav-logo" href="#hero">MD<em>.</em></a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about"><span data-lang="en">About</span><span data-lang="fr">À propos</span></a></li>
+      <li><a href="#projects"><span data-lang="en">Projects</span><span data-lang="fr">Projets</span></a></li>
+      <li><a href="#skills"><span data-lang="en">Skills</span><span data-lang="fr">Compétences</span></a></li>
       <li><a href="#contact">Contact</a></li>
+      <li>
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-target="en">EN</button>
+          <button class="lang-btn" data-target="fr">FR</button>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>
 
+<!-- HERO -->
 <section id="hero">
   <div class="hero-bg-circle"></div>
   <div class="hero-content">
-    <div class="hero-tag">Available for work</div>
+    <div class="hero-tag"><span data-lang="en">Open to opportunities</span><span data-lang="fr">Disponible</span></div>
     <h1 class="hero-name">
-      Your Name
-      <span class="line2">full-stack engineer</span>
+      Mohamed<br>Drissi El Bouzaidi
+      <span class="line2"><span data-lang="en">Senior Fullstack Java / Angular Engineer</span><span data-lang="fr">Développeur Fullstack Java / Angular Senior</span></span>
     </h1>
     <div class="hero-foot">
       <p class="hero-desc">
-        Building fast, clean, and thoughtful web applications. I love turning complex problems into experiences people actually enjoy using.
+        <span data-lang="en">10 years of experience building web systems and information systems in demanding environments — banking, healthcare, transport. Java 21 · Spring Boot · Angular · Microservices.</span>
+        <span data-lang="fr">10 ans d'expérience sur des projets web et SI dans des environnements exigeants — banque, santé, transport. Java 21 · Spring Boot · Angular · Microservices.</span>
       </p>
       <div class="hero-cta">
-        <a href="#projects" class="btn btn-solid">View work</a>
-        <a href="#contact" class="btn btn-ghost">Say hello</a>
+        <a href="#projects" class="btn btn-solid"><span data-lang="en">View work</span><span data-lang="fr">Mes projets</span></a>
+        <a href="#contact" class="btn btn-ghost"><span data-lang="en">Say hello</span><span data-lang="fr">Me contacter</span></a>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about">
   <div class="section-wrap">
     <div class="section-head reveal">
       <span class="section-num">01</span>
-      <h2 class="section-title">About me</h2>
+      <h2 class="section-title"><span data-lang="en">About me</span><span data-lang="fr">À propos</span></h2>
       <div class="section-rule"></div>
     </div>
     <div class="about-layout reveal">
       <div class="about-bio">
-        <p>I'm a software engineer with <em>X years of experience</em> crafting products that live at the intersection of elegant code and intuitive design. My background spans the full stack — I'm as comfortable optimizing a database query as I am finessing a CSS animation.</p>
-        <p>I believe great software is built through clear thinking, honest collaboration, and a relentless focus on the user. I've shipped products used by thousands, contributed to open source, and mentored junior engineers along the way.</p>
-        <p>When I step away from the keyboard, I'm usually <em>reading about distributed systems</em>, exploring cities on foot, or making very mediocre espresso.</p>
+        <div data-lang="en">
+          <p>I'm a <em>Senior Fullstack Java/Angular developer</em> with 10 years of experience working across web projects and information systems in demanding sectors: banking, healthcare, and transport.</p>
+          <p>Specialized in backend development with <em>Java 21 and Spring Boot</em>, I care deeply about software quality — Clean Code, Design Patterns, and modern testing strategies (JUnit 5, Mockito, Testcontainers, Cucumber, ArchUnit) within microservices and hexagonal architectures.</p>
+          <p>On the frontend, I build Angular/TypeScript applications and have experience mentoring developers through code reviews and pair programming.</p>
+        </div>
+        <div data-lang="fr">
+          <p>Je suis un <em>développeur Fullstack Java/Angular Senior</em> avec 10 ans d'expérience sur des projets web et systèmes d'information dans des secteurs exigeants : banque, santé, transport.</p>
+          <p>Spécialisé en développement back-end avec <em>Java 21 et Spring Boot</em>, je veille à la qualité logicielle (Clean Code, Design Patterns) avec des stratégies de tests modernes dans des architectures microservices et hexagonales.</p>
+          <p>Côté front-end, je développe des applications Angular/TypeScript et j'accompagne les développeurs via des revues de code et du pair programming.</p>
+        </div>
       </div>
       <div class="about-sidebar">
         <div class="sidebar-card">
-          <div class="sidebar-label">Based in</div>
-          <div class="sidebar-val">Paris, France</div>
+          <div class="sidebar-label"><span data-lang="en">Based in</span><span data-lang="fr">Localisation</span></div>
+          <div class="sidebar-val">France</div>
         </div>
         <div class="sidebar-card">
-          <div class="sidebar-label">Experience</div>
-          <div class="sidebar-val">X years</div>
+          <div class="sidebar-label"><span data-lang="en">Experience</span><span data-lang="fr">Expérience</span></div>
+          <div class="sidebar-val">10 <span data-lang="en">years</span><span data-lang="fr">ans</span></div>
         </div>
         <div class="sidebar-card">
-          <div class="sidebar-label">Status</div>
-          <div class="sidebar-val" style="color: var(--sage-dk);">Open to opportunities</div>
+          <div class="sidebar-label"><span data-lang="en">Status</span><span data-lang="fr">Statut</span></div>
+          <div class="sidebar-val" style="color:var(--sage-dk)"><span data-lang="en">Open to opportunities</span><span data-lang="fr">Disponible</span></div>
         </div>
         <div class="sidebar-card">
-          <div class="sidebar-label">Education</div>
-          <div class="sidebar-val">CS, University Name</div>
+          <div class="sidebar-label"><span data-lang="en">Education</span><span data-lang="fr">Formation</span></div>
+          <div class="sidebar-val"><span data-lang="en">Master's — Computer Systems Engineering, 2016</span><span data-lang="fr">Master — Ingénierie des systèmes informatique, 2016</span></div>
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-label"><span data-lang="en">Languages</span><span data-lang="fr">Langues</span></div>
+          <div class="sidebar-val"><span data-lang="en">French · English · Arabic</span><span data-lang="fr">Français · Anglais · Arabe</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- PROJECTS -->
 <section id="projects">
   <div class="section-wrap">
     <div class="section-head reveal">
       <span class="section-num">02</span>
-      <h2 class="section-title">Selected work</h2>
+      <h2 class="section-title"><span data-lang="en">Experience</span><span data-lang="fr">Expériences</span></h2>
       <div class="section-rule"></div>
     </div>
     <div>
-      <a class="project-item reveal" href="#" target="_blank" rel="noopener">
+
+      <!-- Worldline -->
+      <div class="project-item reveal" data-modal="worldline">
         <div class="project-num-big">01</div>
         <div>
-          <div class="project-title">Project Alpha</div>
-          <p class="project-desc">Describe what this project does, the problem it solves, and its impact. Keep it focused — one or two sentences.</p>
-          <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span></div>
+          <div class="project-company">Worldline · <span data-lang="en">Feb 2022 – Present · 4 yrs</span><span data-lang="fr">Fév 2022 – Présent · 4 ans</span></div>
+          <div class="project-title"><span data-lang="en">Confirmed R&D Engineer</span><span data-lang="fr">Ingénieur d'études et développement confirmé</span></div>
+          <p class="project-desc">
+            <span data-lang="en">Secure digital messaging platform (TI — Trusted Interaction) for bank advisors and external clients. Migration of millions of records from legacy to AWS.</span>
+            <span data-lang="fr">Plateforme de messagerie sécurisée (TI — Trusted Interaction) pour conseillers bancaires. Migration de millions de données depuis un environnement legacy vers AWS.</span>
+          </p>
+          <div class="tags"><span class="tag">Java 21</span><span class="tag">Angular 20</span><span class="tag">Spring Batch</span><span class="tag">Kafka</span><span class="tag">AWS</span><span class="tag">Cassandra</span><span class="tag">Elasticsearch</span></div>
         </div>
-        <div class="arrow-box">↗</div>
-      </a>
-      <a class="project-item reveal" href="#" target="_blank" rel="noopener">
+        <div class="arrow-box">+</div>
+      </div>
+
+      <!-- SIGMA -->
+      <div class="project-item reveal" data-modal="sigma">
         <div class="project-num-big">02</div>
         <div>
-          <div class="project-title">Project Beta</div>
-          <p class="project-desc">What did you build, and why does it matter? Talk about scale, users, or technical challenges you overcame.</p>
-          <div class="tags"><span class="tag">TypeScript</span><span class="tag">Next.js</span><span class="tag">Redis</span></div>
+          <div class="project-company">SIGMA · <span data-lang="en">Mar 2020 – Jan 2022 · 2 yrs</span><span data-lang="fr">Mars 2020 – Jan 2022 · 2 ans</span></div>
+          <div class="project-title"><span data-lang="en">R&D Engineer & Technical Project Lead</span><span data-lang="fr">Ingénieur d'études & Chef de projet technique</span></div>
+          <p class="project-desc">
+            <span data-lang="en">Fullstack development on Imhoweb & Cinatis business software for diverse industry clients. Team management and technical leadership.</span>
+            <span data-lang="fr">Développement fullstack sur les logiciels métier Imhoweb & Cinatis. Gestion d'équipe et lead technique.</span>
+          </p>
+          <div class="tags"><span class="tag">Java 8</span><span class="tag">Angular</span><span class="tag">Spring Boot</span><span class="tag">PostgreSQL</span><span class="tag">Scrum</span></div>
         </div>
-        <div class="arrow-box">↗</div>
-      </a>
-      <a class="project-item reveal" href="#" target="_blank" rel="noopener">
+        <div class="arrow-box">+</div>
+      </div>
+
+      <!-- ALG -->
+      <div class="project-item reveal" data-modal="alg">
         <div class="project-num-big">03</div>
         <div>
-          <div class="project-title">Project Gamma</div>
-          <p class="project-desc">An open-source tool, API, or library. Link directly to your GitHub or live demo so visitors can explore it.</p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Docker</span></div>
+          <div class="project-company">Attestation Legal (ALG) · <span data-lang="en">Feb 2018 – Jan 2020 · 2 yrs</span><span data-lang="fr">Fév 2018 – Jan 2020 · 2 ans</span></div>
+          <div class="project-title"><span data-lang="en">R&D Engineer & Technical Project Lead</span><span data-lang="fr">Ingénieur d'études & Chef de projet technique</span></div>
+          <p class="project-desc">
+            <span data-lang="en">Microservices architecture for OFA & Interoperability projects. Designed and built a notification-center microservice for email and web/mobile push notifications.</span>
+            <span data-lang="fr">Architecture microservices sur les projets OFA & Interoperability. Conception du micro-service notification-center pour emails et notifications web/mobile.</span>
+          </p>
+          <div class="tags"><span class="tag">Java 21</span><span class="tag">ReactJs</span><span class="tag">Spring Boot</span><span class="tag">Docker</span><span class="tag">OpenShift</span><span class="tag">Kafka</span></div>
         </div>
-        <div class="arrow-box">↗</div>
-      </a>
+        <div class="arrow-box">+</div>
+      </div>
+
+      <!-- Norsys -->
+      <div class="project-item reveal" data-modal="norsys">
+        <div class="project-num-big">04</div>
+        <div>
+          <div class="project-company">NORSYS · <span data-lang="en">Apr 2016 – Jan 2018 · 2 yrs</span><span data-lang="fr">Avr 2016 – Jan 2018 · 2 ans</span></div>
+          <div class="project-title"><span data-lang="en">Software Engineer</span><span data-lang="fr">Ingénieur Développement</span></div>
+          <p class="project-desc">
+            <span data-lang="en">PHP to Java EE migration, backend & frontend development on SINAF, VY and EF-Facturation projects.</span>
+            <span data-lang="fr">Migration PHP vers Java EE, développement backend & frontend sur les projets SINAF, VY et EF-Facturation.</span>
+          </p>
+          <div class="tags"><span class="tag">Java 8</span><span class="tag">Angular</span><span class="tag">ReactJs</span><span class="tag">Spring Boot</span><span class="tag">PostgreSQL</span></div>
+        </div>
+        <div class="arrow-box">+</div>
+      </div>
+
     </div>
   </div>
 </section>
 
+<!-- SKILLS -->
 <section id="skills">
   <div class="section-wrap">
     <div class="section-head reveal">
       <span class="section-num">03</span>
-      <h2 class="section-title">Skills</h2>
+      <h2 class="section-title"><span data-lang="en">Skills</span><span data-lang="fr">Compétences</span></h2>
       <div class="section-rule"></div>
     </div>
     <div class="skills-grid reveal">
       <div class="skill-group">
-        <div class="skill-group-name">Languages</div>
-        <div class="skill-items">
-          <span class="skill-pill">JavaScript</span><span class="skill-pill">TypeScript</span><span class="skill-pill">Python</span><span class="skill-pill">SQL</span>
-        </div>
+        <div class="skill-group-name"><span data-lang="en">Languages</span><span data-lang="fr">Langages</span></div>
+        <div class="skill-items"><span class="skill-pill">Java 21</span><span class="skill-pill">TypeScript</span><span class="skill-pill">JavaScript</span><span class="skill-pill">Lua</span><span class="skill-pill">SQL</span></div>
       </div>
       <div class="skill-group">
         <div class="skill-group-name">Frontend</div>
-        <div class="skill-items">
-          <span class="skill-pill">React</span><span class="skill-pill">Next.js</span><span class="skill-pill">CSS</span><span class="skill-pill">Tailwind</span>
-        </div>
+        <div class="skill-items"><span class="skill-pill">Angular 20</span><span class="skill-pill">ReactJs</span><span class="skill-pill">EmberJs</span><span class="skill-pill">SCSS</span><span class="skill-pill">HTML5</span></div>
       </div>
       <div class="skill-group">
         <div class="skill-group-name">Backend</div>
-        <div class="skill-items">
-          <span class="skill-pill">Node.js</span><span class="skill-pill">FastAPI</span><span class="skill-pill">REST</span><span class="skill-pill">GraphQL</span>
-        </div>
+        <div class="skill-items"><span class="skill-pill">Spring Boot</span><span class="skill-pill">Spring Data</span><span class="skill-pill">Spring Security</span><span class="skill-pill">Spring Batch</span><span class="skill-pill">Spring MVC</span></div>
       </div>
       <div class="skill-group">
-        <div class="skill-group-name">Infra & Tools</div>
-        <div class="skill-items">
-          <span class="skill-pill">Docker</span><span class="skill-pill">AWS</span><span class="skill-pill">Git</span><span class="skill-pill">CI/CD</span>
-        </div>
+        <div class="skill-group-name"><span data-lang="en">Messaging</span><span data-lang="fr">Asynchrone</span></div>
+        <div class="skill-items"><span class="skill-pill">Kafka</span><span class="skill-pill">RabbitMQ</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name"><span data-lang="en">Architecture</span><span data-lang="fr">Architecture</span></div>
+        <div class="skill-items"><span class="skill-pill">Microservices</span><span class="skill-pill">Hexagonal</span><span class="skill-pill">TDD/BDD/DDD</span><span class="skill-pill">SOLID</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name"><span data-lang="en">Testing</span><span data-lang="fr">Tests</span></div>
+        <div class="skill-items"><span class="skill-pill">JUnit 5</span><span class="skill-pill">Mockito</span><span class="skill-pill">Testcontainers</span><span class="skill-pill">Cucumber</span><span class="skill-pill">ArchUnit</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name">Cloud & DevOps</div>
+        <div class="skill-items"><span class="skill-pill">Docker</span><span class="skill-pill">Kubernetes</span><span class="skill-pill">AWS</span><span class="skill-pill">OpenShift</span><span class="skill-pill">GitLab CI</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name"><span data-lang="en">Databases</span><span data-lang="fr">Bases de données</span></div>
+        <div class="skill-items"><span class="skill-pill">PostgreSQL</span><span class="skill-pill">MySQL</span><span class="skill-pill">Elasticsearch</span><span class="skill-pill">Cassandra</span></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
   <div class="section-wrap">
     <div class="section-head reveal">
       <span class="section-num">04</span>
-      <h2 class="section-title">Get in touch</h2>
+      <h2 class="section-title">Contact</h2>
       <div class="section-rule"></div>
     </div>
     <div class="contact-layout reveal">
       <div>
-        <h3 class="contact-headline">Let's make something <span>worth remembering.</span></h3>
-        <p class="contact-sub">Open to full-time roles, freelance projects, and interesting conversations. Don't be shy.</p>
-        <a href="mailto:you@email.com" class="btn btn-solid">Send an email ↗</a>
+        <h3 class="contact-headline">
+          <span data-lang="en">Let's build something <span>worth shipping.</span></span>
+          <span data-lang="fr">Construisons quelque chose <span>qui compte.</span></span>
+        </h3>
+        <p class="contact-sub">
+          <span data-lang="en">Open to full-time roles, freelance missions, and interesting projects. Don't be shy.</span>
+          <span data-lang="fr">Disponible pour des postes en CDI, des missions freelance ou des projets intéressants.</span>
+        </p>
+        <a href="mailto:contact@example.com" class="btn btn-solid"><span data-lang="en">Send an email ↗</span><span data-lang="fr">Envoyer un email ↗</span></a>
       </div>
       <div class="contact-links">
-        <a class="contact-link" href="mailto:you@email.com"><span>Email</span><span class="link-arrow">↗</span></a>
-        <a class="contact-link" href="https://github.com/yourusername" target="_blank" rel="noopener"><span>GitHub</span><span class="link-arrow">↗</span></a>
-        <a class="contact-link" href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener"><span>LinkedIn</span><span class="link-arrow">↗</span></a>
-        <a class="contact-link" href="/resume.pdf" target="_blank" rel="noopener"><span>Résumé</span><span class="link-arrow">↗</span></a>
+        <a class="contact-link" href="mailto:contact@example.com"><span>Email</span><span class="link-arrow">↗</span></a>
+        <a class="contact-link" href="https://linkedin.com/in/mohameddrissielbouzaidi" target="_blank" rel="noopener"><span>LinkedIn</span><span class="link-arrow">↗</span></a>
+        <a class="contact-link" href="https://github.com/" target="_blank" rel="noopener"><span>GitHub</span><span class="link-arrow">↗</span></a>
+        <a class="contact-link" href="#"><span>Résumé / CV</span><span class="link-arrow">↗</span></a>
       </div>
     </div>
   </div>
@@ -572,34 +391,244 @@
 
 <footer>
   <div class="footer-inner">
-    <p>© <span id="yr"></span> Your Name. Built with HTML & CSS.</p>
-    <p><a href="#hero">↑ Back to top</a></p>
+    <p>© <span id="yr"></span> Mohamed Drissi El Bouzaidi</p>
+    <p><a href="#hero">↑ <span data-lang="en">Back to top</span><span data-lang="fr">Haut de page</span></a></p>
   </div>
 </footer>
 
+<!-- MODAL DATA -->
 <script>
-  document.getElementById('yr').textContent = new Date().getFullYear();
+const MODALS = {
+  worldline: {
+    en: {
+      company: 'Worldline',
+      title: 'Confirmed R&D Engineer',
+      duration: 'February 2022 – Present · 4 years 2 months',
+      context: 'Integrated within a client team of 4 developers, 1 Tech Lead and 1 Project Manager, within a 40+ person department. Project: TI (Trusted Interaction) — a digitalized secure messaging solution for bank advisors and their external clients.',
+      missions: [
+        'Legacy to AWS data migration: technical migration across Cassandra, Elasticsearch and S3 to AWS targets',
+        'Product and technical version upgrades; refactoring and modernisation of existing components',
+        'Production monitoring, incident analysis and resolution',
+        'New backend and frontend feature development per business and technical specifications',
+        'Code reviews and best practices to reinforce maintainability and readability',
+        'Writing and maintaining unit and integration tests (JUnit 5, Mockito, TestContainers)',
+      ],
+      achievements: [
+        'Designed and built a backend data migration module processing several million customer records from legacy to AWS using Spring Batch for high-volume orchestration; data from Cassandra, Elasticsearch and S3 extracted, transformed and loaded to AWS targets, with Kafka for parallel async processing and cross-system data consistency.',
+        'Implemented production quality-control mechanisms: resume checkpoints, data reconciliation, processing monitoring and reject management with retry strategy.',
+        'End-to-end development of a piloting & statistics module covering data modelling, aggregation API design and visualisation interfaces for real-time admin dashboards.',
+        'Contributed to the frontend technical migration from EmberJs to Angular 20.',
+      ],
+      stack: ['Java 21','Angular 20','EmberJs','Spring Boot','Spring Data','Spring Security','Spring MVC','Spring Batch','Lombok','Liquibase','MySQL','Elasticsearch','Cassandra','S3','GitLab CI','Docker','OpenShift','AWS','Kafka'],
+    },
+    fr: {
+      company: 'Worldline',
+      title: 'Ingénieur d\'études et développement confirmé',
+      duration: 'Février 2022 – Présent · 4 ans et 2 mois',
+      context: 'Intégré dans une équipe client de 4 développeurs, 1 Tech Lead et 1 Chef de Projet, au sein d\'un département de 40+ collaborateurs. Projet : TI (Trusted Interaction) — solution digitalisée de messagerie sécurisée pour conseillers bancaires et leurs clients externes.',
+      missions: [
+        'Migration technique des données depuis un environnement legacy vers AWS (Cassandra, Elasticsearch, S3)',
+        'Montée de version produit et technique ; refactoring et modernisation de composants existants',
+        'Surveillance de la production et analyse/résolution d\'incidents',
+        'Conception et développement de nouvelles fonctionnalités back-end et front-end',
+        'Revues de code et mise en place de bonnes pratiques pour la maintenabilité',
+        'Rédaction et maintenance de tests unitaires et d\'intégration (JUnit 5, Mockito, TestContainers)',
+      ],
+      achievements: [
+        'Conception et développement backend d\'un module de migration traitant plusieurs millions de données clients vers AWS en exploitant Spring Batch pour l\'orchestration ; données sur Cassandra, Elasticsearch et S3 extraites, transformées et chargées, avec Kafka pour le traitement asynchrone et la cohérence inter-systèmes.',
+        'Mise en place de mécanismes de contrôle qualité en production : checkpoints de reprise, réconciliation des données, monitoring et gestion des rejets avec stratégie de retry.',
+        'Développement end-to-end d\'un module de pilotage et de statistiques : modélisation des données, APIs d\'agrégation et interfaces de visualisation pour suivi temps réel.',
+        'Contribution à la migration technique du front-end de EmberJs vers Angular 20.',
+      ],
+      stack: ['Java 21','Angular 20','EmberJs','Spring Boot','Spring Data','Spring Security','Spring MVC','Spring Batch','Lombok','Liquibase','MySQL','Elasticsearch','Cassandra','S3','GitLab CI','Docker','OpenShift','AWS','Kafka'],
+    }
+  },
+  sigma: {
+    en: {
+      company: 'SIGMA',
+      title: 'R&D Engineer & Technical Project Lead',
+      duration: 'March 2020 – January 2022 · 1 year 11 months',
+      context: 'Team of 6 developers + 2 Tech Leads + 1 PM + 2 POs. Sigma is a software publisher specialised in business solutions for diverse industry sectors.',
+      missions: [
+        'Fullstack development (Java & Angular 8) on Imhoweb & Cinatis projects',
+        'Team management and technical lead dev',
+        'Project estimation and planning',
+        'Writing functional specifications',
+        'Ensuring deliverable quality and planning / deadline compliance',
+      ],
+      achievements: [
+        'Delivered client requirements on time while maintaining high code quality standards.',
+        'Led and coordinated the team, ensured deliverable quality and maintained smooth communication with the client and administration, fostering a positive work environment.',
+      ],
+      stack: ['Java 8','Angular','Spring Boot','Spring Data','Spring MVC','PostgreSQL','Elasticsearch','Eclipse','IntelliJ','Git','Maven','Jenkins','Microservices','REST API','Scrum','Agile','TDD'],
+    },
+    fr: {
+      company: 'SIGMA',
+      title: 'Ingénieur d\'études et développement & Chef de projet technique',
+      duration: 'Mars 2020 – Janvier 2022 · 1 an et 11 mois',
+      context: 'Équipe de 6 développeurs + 2 Tech leads + 1 CP + 2 PO. Sigma est un éditeur de logiciels spécialisé dans la conception de solutions métier pour des secteurs variés.',
+      missions: [
+        'Développement FullStack (Java & Angular 8) sur les projets Imhoweb & Cinatis',
+        'Gestion d\'équipe et lead dev technique',
+        'Estimation et planification du projet',
+        'Rédaction de cahier des charges',
+        'Assurer la qualité du livrable et le respect du planning',
+      ],
+      achievements: [
+        'Développement des demandes clients dans le respect des délais et de la qualité du code.',
+        'Animation et coordination de l\'équipe, garantie de la qualité des livrables et communication fluide avec le client et l\'administration.',
+      ],
+      stack: ['Java 8','Angular','Spring Boot','Spring Data','Spring MVC','PostgreSQL','Elasticsearch','Eclipse','IntelliJ','Git','Maven','Jenkins','Microservices','REST API','Scrum','Agile','TDD'],
+    }
+  },
+  alg: {
+    en: {
+      company: 'Attestation Legal (ALG)',
+      title: 'R&D Engineer & Technical Project Lead',
+      duration: 'February 2018 – January 2020 · 2 years',
+      context: 'OFA product department with 20+ collaborators: 15 developers, 2 Tech Leads, 2 PMs, 1 Project Director. Projects: OFA, Interoperability.',
+      missions: [
+        'Conception and development of microservices in Java EE',
+        'Frontend development with ReactJs',
+        'Team oversight and follow-up',
+        'Facilitating planning pokers, dailies, demos and retrospectives',
+        'Design and development of the notification-center microservice for centralised email and web/mobile push notifications',
+      ],
+      achievements: [
+        'Delivered client requirements on time and with quality code.',
+        'Evolved into a Lead Developer role, responsible for building and growing the team.',
+        'Designed and built the notification-center microservice managing and centralising email and web/mobile platform notifications.',
+      ],
+      stack: ['Java 21','Ember.js','Spring Boot','Spring Data','Spring Security','Spring MVC','MySQL','Elasticsearch','Cassandra','S3','Docker','OpenShift','Git','IntelliJ IDEA','Microservices','REST API'],
+    },
+    fr: {
+      company: 'Attestation Legal (ALG)',
+      title: 'Ingénieur d\'études et développement & Chef de projet technique',
+      duration: 'Février 2018 – Janvier 2020 · 2 ans',
+      context: 'Département produit OFA avec 20+ collaborateurs : 15 développeurs, 2 Tech leads, 2 chefs de projet, 1 Directeur de projet. Projets : OFA, Interoperability.',
+      missions: [
+        'Conception et développement des micro-services en Java EE',
+        'Développement front-end avec ReactJs',
+        'Pilotage et suivi d\'équipe',
+        'Animation des planning-pokers, dailies, démos et rétrospectives',
+        'Conception et développement du micro-service notification-center pour la gestion centralisée des notifications emails et plateformes web/mobile',
+      ],
+      achievements: [
+        'Développement des demandes clients dans le respect des délais et de la qualité du code.',
+        'Évolution vers un rôle de Lead Developer avec la responsabilité de constituer et faire grandir l\'équipe.',
+        'Conception et développement du micro-service notification-center centralisant les notifications emails et plateformes web/mobile.',
+      ],
+      stack: ['Java 21','Ember.js','Spring Boot','Spring Data','Spring Security','Spring MVC','MySQL','Elasticsearch','Cassandra','S3','Docker','OpenShift','Git','IntelliJ IDEA','Microservices','REST API'],
+    }
+  },
+  norsys: {
+    en: {
+      company: 'NORSYS',
+      title: 'Software Engineer',
+      duration: 'April 2016 – January 2018 · 1 year 10 months',
+      context: 'Projects: SINAF, VY (Printable Document Requests), EF-Facturation éditique.',
+      missions: [
+        'Technical migration: legacy PHP codebase to Java EE technologies',
+        'Backend and frontend development',
+        'Contribution to functional requirements writing',
+        'Technical solution design and conception',
+      ],
+      achievements: [
+        'Successfully migrated a legacy PHP system to modern Java EE stack.',
+        'Contributed to frontend and backend development across multiple client projects.',
+      ],
+      stack: ['Java 8','Angular','ReactJs','Spring Boot','Spring Data','Spring MVC','PostgreSQL','Elasticsearch','Eclipse','IntelliJ','Git','Maven','Jenkins','Microservices','REST API','Scrum','Agile','TDD'],
+    },
+    fr: {
+      company: 'NORSYS',
+      title: 'Ingénieur Développement',
+      duration: 'Avril 2016 – Janvier 2018 · 1 an et 10 mois',
+      context: 'Projets : SINAF, VY (Demandes Doc Format Imprimable), EF-Facturation éditique.',
+      missions: [
+        'Migration technique : ancien code source PHP vers Java EE',
+        'Développement backend et frontend',
+        'Contribution à la rédaction des besoins fonctionnels',
+        'Conception & design des solutions techniques',
+      ],
+      achievements: [
+        'Migration réussie d\'un système PHP legacy vers une stack Java EE moderne.',
+        'Contribution au développement front-end et back-end sur plusieurs projets clients.',
+      ],
+      stack: ['Java 8','Angular','ReactJs','Spring Boot','Spring Data','Spring MVC','PostgreSQL','Elasticsearch','Eclipse','IntelliJ','Git','Maven','Jenkins','Microservices','REST API','Scrum','Agile','TDD'],
+    }
+  }
+};
 
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-  });
+let currentLang = 'en';
 
-  const reveals = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('in'), i * 90);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  reveals.forEach(el => obs.observe(el));
+function getLang() { return currentLang; }
+
+function renderModal(key) {
+  const data = MODALS[key][getLang()];
+  const missLabel = getLang() === 'en' ? 'Missions' : 'Missions';
+  const achLabel = getLang() === 'en' ? 'Key achievements' : 'Réussites';
+  const stackLabel = getLang() === 'en' ? 'Tech stack' : 'Environnement technique';
+  return `
+    <div class="modal-company">${data.company}</div>
+    <div class="modal-title">${data.title}</div>
+    <div class="modal-duration">${data.duration}</div>
+    <p class="modal-text">${data.context}</p>
+    <div class="modal-section-title">${missLabel}</div>
+    <ul class="modal-list">${data.missions.map(m=>`<li>${m}</li>`).join('')}</ul>
+    <div class="modal-section-title">${achLabel}</div>
+    <ul class="modal-list">${data.achievements.map(a=>`<li>${a}</li>`).join('')}</ul>
+    <div class="modal-section-title">${stackLabel}</div>
+    <div class="modal-tags">${data.stack.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+  `;
+}
+
+// Modal open/close
+let currentModal = null;
+document.querySelectorAll('[data-modal]').forEach(el => {
+  el.addEventListener('click', () => {
+    currentModal = el.dataset.modal;
+    document.getElementById('modal-content').innerHTML = renderModal(currentModal);
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => { if(e.target === document.getElementById('modal-overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Lang toggle
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentLang = btn.dataset.target;
+    document.body.className = 'lang-' + currentLang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if(currentModal && document.getElementById('modal-overlay').classList.contains('open')) {
+      document.getElementById('modal-content').innerHTML = renderModal(currentModal);
+    }
+  });
+});
+
+// Footer year
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Cursor
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => { cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; });
+document.querySelectorAll('a,button,[data-modal]').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+});
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*90); obs.unobserve(e.target); } });
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
